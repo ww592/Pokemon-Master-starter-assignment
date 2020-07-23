@@ -52,6 +52,10 @@ class Pokemon:
 		elif self.xp == self.max_xp:
 			self.xp = self.max_xp
 			print(self.name + "has restored to full health!")	
+	#K.O
+	def knock_out_(self, other_pokemon):
+		other_pokemon.health = 0
+		other_pokemon.ko = True
 	
 	#Pokemon Level Up
 	def levelUp(self):
@@ -70,7 +74,7 @@ class Trainer:
 		return "The trainer {name} has {pokemons} pokemon, {potions} potions, and {curr} active pokemon".format(name=self.name, pokemons=self.pokemons, potions=self.potions, curr=self.curr_pokemon)
 	
 	#Attack Other Trainers
-		def atk_other_trainers(self, other_trainer):
+	def atk_other_trainers(self, other_trainer):
 			their_pokemon = other_trainer.pokemons[other_trainer.curr_pokemon]
 			self.curr_pokemon.atk_other_trainers(their_pokemon)
 			print(self.name + " has attacked " + other_trainer.name + "!")		
@@ -87,4 +91,31 @@ class Trainer:
 				self.curr_pokemon.gain_health(10)
 				print("{name} has used one potion".format(name=self.name))
 	
-		
+	#Attacks enemy trainer
+	def attack(self, other_trainer):
+		their_pokemon = other_trainer.curr_pokemon
+		self.curr_pokemon.attack(their_pokemon)
+		print(self.name + " has attacked " + other_trainer.name + "!")
+	
+	#K.O
+	def knock_out_pokemon(self, other_trainer):
+		their_pokemon = other_trainer.curr_pokemon
+		self.curr_pokemon.ko(their_pokemon)
+		print(other_trainer.name + " K.O. !")
+	
+	#Switch pokemon
+	def switch(self, new_curr_pokemon):
+		for poke in self.pokemons:
+			if poke == new_curr_pokemon:
+				if new_curr_pokemon.ko != True:
+					self.curr_pokemon = new_curr_pokemon
+					print(self.name + " has changed current pokemon to " + self.curr_pokemon.name)
+
+pok1 = Pokemon("pok1", 2, "fire", 20)
+pok2 = Pokemon("pok2", 3, "water", 30)
+pok3 = Pokemon("pok3", 4, "grass", 40)
+pok4 = Pokemon("pok4", 4, "fire", 40)
+pok5 = Pokemon("pok5", 2, "water", 20)
+pok6 = Pokemon("pok6", 3, "grass", 30)
+trainer1 = Trainer("trainer1", [pok1, pok3, pok6], 4, pok3)
+trainer2 = Trainer("trainer2", [pok2, pok4, pok5], 4, pok4)
